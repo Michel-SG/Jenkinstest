@@ -137,6 +137,7 @@ jobs:
         
         if [[ "${{ steps.validate.outputs.pr-body }}" == *"Empty"* ]]; then
           echo "The text 'Empty' exists in the PR body."
+          exit 1
           
         else
           echo "The text 'Empty file' does not exist in the PR body."
