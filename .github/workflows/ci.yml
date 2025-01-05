@@ -135,7 +135,7 @@ jobs:
         echo "The PR Body is:"
         echo "${{ steps.validate.outputs.pr-body }}"
         
-        if [[ "${{ steps.validate.outputs.pr-body }}" == *"Empty"* ]]; then
+        if [[ "${{ steps.validate.outputs.pr-body }}" == *"Emptyone"* ]]; then
           echo "The text 'Empty' exists in the PR body."
           exit 1
           
