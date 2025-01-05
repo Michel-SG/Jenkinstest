@@ -136,7 +136,8 @@ jobs:
       env:
         GITHUB_EVENT_PATH: ${{ github.event_path }}
       run: |
-        PR_BODY= "${{ steps.validate.outputs.text_value }}"
+        PR_BODY=${{ steps.validate.outputs.text_value }}
+        echo $PR_BODY
         if [[ "$PR_BODY" == *"Empty"* ]]; then
           echo "The text 'Empty' exists in the PR body."
           
