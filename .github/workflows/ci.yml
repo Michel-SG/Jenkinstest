@@ -44,10 +44,11 @@ jobs:
         echo $GITHUB_BASE_REF
       
     # Ajoutez un fichier README.md au dépôt
-    - name: Add README.md
-      run: |
-        echo "# Bienvenue dans ce projet" > README.md
-        echo "Ce fichier a été ajouté automatiquement via une GitHub Action." >> README.md    
+    - name: Call composite action from another repo
+      id: composit-id
+      uses: Michel-SG/compositeaction
+      with: 
+        INPUT_VARIABLE: "Mon code"  
     
     # - name: Validate PR checkboxes
     #   id: checkboxes
