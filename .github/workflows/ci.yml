@@ -17,6 +17,7 @@ jobs:
         C: ${{ github.event.pull_request.number }}
         D: ${{ github.event.pull_request.state }}
         E: ${{ github.event.pull_request.title }}
+        GITHUB_EVENT_PATH: ${{ github.event_path }}
     steps:
     - uses: actions/checkout@master
     - name: copy file
@@ -115,10 +116,10 @@ jobs:
     - name: Valider les cases cochées dans la description de la PR
       id: validate
       env: 
-        GITHUB_EVENT_PATH: ${{ github.event_path }}
+        GITHUB_EVENT_PATH: ${{ env.GITHUB_EVENT_PATH }}
         
       run: |
-        PR_BODY=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")
+        PR_BODY=$(jq -r '.pull_request.body' "${{ env.GITHUB_EVENT_PATH }}")
         
         echo $PR_BODY
         if echo "$PR_BODY" | grep -q '\- \[x\] Mon code'; then
