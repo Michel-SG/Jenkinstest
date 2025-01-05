@@ -127,12 +127,13 @@ jobs:
           echo "Erreur : Certaines cases de la checklist ne sont pas cochées."
           exit 1 
         fi
+        echo "env_val=$PR_BODY" >> $GITHUB_OUTPUT
         
     - name: Valider la description de la PR
       env:
         GITHUB_EVENT_PATH: ${{ github.event_path }}
       run: |
-        PR_BODY=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")
+        PR_BODY= "${{ steps.validate.outputs.env_val }}"
         if [[ "$PR_BODY" == *"Empty"* ]]; then
           echo "The text 'Empty' exists in the PR body."
           
