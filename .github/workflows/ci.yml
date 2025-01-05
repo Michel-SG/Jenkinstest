@@ -127,7 +127,7 @@ jobs:
           echo "Erreur : Certaines cases de la checklist ne sont pas cochées."
           exit 1 
         fi
-        echo "text_value<<EOF" >> $GITHUB_OUTPUT
+        echo "pr-body<<EOF" >> $GITHUB_OUTPUT
         echo "$PR_BODY" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
         
@@ -136,15 +136,16 @@ jobs:
       env:
         GITHUB_EVENT_PATH: ${{ github.event_path }}
       run: |
-        PR_BODY=${{ steps.validate.outputs.text_value }}
-        echo $PR_BODY
-        if [[ "$PR_BODY" == *"Empty"* ]]; then
-          echo "The text 'Empty' exists in the PR body."
+        echo "The PR Body is:"
+        echo "${{ steps.validate.outputs.pr-body }}"
+        
+        # if [[ "$PR_BODY" == *"Empty"* ]]; then
+        #   echo "The text 'Empty' exists in the PR body."
           
-        else
-          echo "The text 'Empty file' does not exist in the PR body."
+        # else
+        #   echo "The text 'Empty file' does not exist in the PR body."
           
-        fi
+        # fi
 
     - name: Generate 0 or 1
       id: generate_number
