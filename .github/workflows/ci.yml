@@ -118,7 +118,7 @@ jobs:
         GITHUB_EVENT_PATH: ${{ github.event_path }}
         
       run: |
-        PR_BODY="$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")"
+        PR_BODY=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")
         
         echo $PR_BODY
         if echo "$PR_BODY" | grep -q '\- \[x\] Mon code'; then
@@ -127,7 +127,8 @@ jobs:
           echo "Erreur : Certaines cases de la checklist ne sont pas cochées."
           exit 1 
         fi
-        echo "env_val=$PR_BODY" >> $GITHUB_OUTPUT
+        PR_REQ=$(echo $$PR_BODY | tr '\n' ' ')
+        echo "env_val=$PR_REQ" >> $GITHUB_OUTPUT
         
     - name: Valider la description de la PR
       env:
