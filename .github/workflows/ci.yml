@@ -114,12 +114,9 @@ jobs:
         mv jq $HOME/bin/
         echo "$HOME/bin" >> $GITHUB_PATH
     - name: Valider les cases cochées dans la description de la PR
-      id: validate
-      env: 
-        GITHUB_EVENT_PATH: ${{ env.GITHUB_EVENT_PATH }}
-        
+      id: validate  
       run: |
-        PR_BODY=$(jq -r '.pull_request.body' "${{ env.GITHUB_EVENT_PATH }}")
+        PR_BODY=$(jq -r '.pull_request.body' "${GITHUB_EVENT_PATH}")
         
         echo $PR_BODY
         if echo "$PR_BODY" | grep -q '\- \[x\] Mon code'; then
@@ -134,8 +131,6 @@ jobs:
         
         
     - name: Valider la description de la PR
-      env:
-        GITHUB_EVENT_PATH: ${{ github.event_path }}
       run: |
         echo "The PR Body is:"
         echo "${{ steps.validate.outputs.pr-body }}"
