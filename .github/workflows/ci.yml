@@ -139,13 +139,13 @@ jobs:
         echo "The PR Body is:"
         echo "${{ steps.validate.outputs.pr-body }}"
         
-        # if [[ "$PR_BODY" == *"Empty"* ]]; then
-        #   echo "The text 'Empty' exists in the PR body."
+        if [[ "${{ steps.validate.outputs.pr-body }}" == *"Empty"* ]]; then
+          echo "The text 'Empty' exists in the PR body."
           
-        # else
-        #   echo "The text 'Empty file' does not exist in the PR body."
+        else
+          echo "The text 'Empty file' does not exist in the PR body."
           
-        # fi
+        fi
     - name: Cache node modules
       uses: actions/cache@v3
       env:
