@@ -47,7 +47,7 @@ jobs:
     # Ajoutez un fichier README.md au dépôt
     - name: Call composite action from another repo
       id: composit-id
-      uses: michelsadeu/compositeaction@06941f2315a7ab797d4fe7a0309c1814fb63856b
+      uses: michelsadeu/compositeaction/checklist@4acd8f0393463939873ebf209416019c66ba0b4d
       with: 
         INPUT_VARIABLE: "Mon code"  
     
