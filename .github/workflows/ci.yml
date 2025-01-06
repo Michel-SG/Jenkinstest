@@ -19,17 +19,17 @@ jobs:
         E: ${{ github.event.pull_request.title }}
         GITHUB_EVENT_PATH: ${{ github.event_path }}
     steps:
-    - uses: actions/checkout@master
-    - name: copy file
-      uses: canastro/copy-file-action@master
-      with:
-        source: "Main.java"
-        target: "appfiles/main.java"
-    - name: run tests
-      run: |
-        cd "appfiles"
-        ls
-        cat main.java
+    # - uses: actions/checkout@master
+    # - name: copy file
+    #   uses: canastro/copy-file-action@master
+    #   with:
+    #     source: "Main.java"
+    #     target: "appfiles/main.java"
+    # - name: run tests
+    #   run: |
+    #     cd "appfiles"
+    #     ls
+    #     cat main.java
     - name: Retrieve secret
       env:
         super_secret: ${{ secrets.SUPERSECRET }}
@@ -143,15 +143,15 @@ jobs:
           echo "The text 'Empty file' does not exist in the PR body."
           
         fi
-    - name: Cache node modules
-      uses: actions/cache@v3
-      env:
-        cache-name: cache-node
-      with:
-        path: ./
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('Dockerfile') }}
-        restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
+    # - name: Cache node modules
+    #   uses: actions/cache@v3
+    #   env:
+    #     cache-name: cache-node
+    #   with:
+    #     path: ./
+    #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('Dockerfile') }}
+    #     restore-keys: |
+    #         ${{ runner.os }}-build-${{ env.cache-name }}-
 
   notify:
     needs: build
