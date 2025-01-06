@@ -47,7 +47,7 @@ jobs:
     # Ajoutez un fichier README.md au dépôt
     - name: Call composite action from another repo
       id: composit-id
-      uses: michelsadeu/compositeaction@main
+      uses: michelsadeu/compositeaction@v1.0.0
       with: 
         INPUT_VARIABLE: "Mon code"  
     
