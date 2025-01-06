@@ -17,6 +17,7 @@ jobs:
         C: ${{ github.event.pull_request.number }}
         D: ${{ github.event.pull_request.state }}
         E: ${{ github.event.pull_request.title }}
+        GITHUB_EVENT_PATH: ${{ github.event_path }}
     steps:
     - uses: actions/checkout@master
     - name: copy file
@@ -44,10 +45,11 @@ jobs:
         echo $GITHUB_BASE_REF
       
     # Ajoutez un fichier README.md au dépôt
-    - name: Add README.md
-      run: |
-        echo "# Bienvenue dans ce projet" > README.md
-        echo "Ce fichier a été ajouté automatiquement via une GitHub Action." >> README.md    
+    - name: Call composite action from another repo
+      id: composit-id
+      uses: michelsadeu/compositeaction@v1.0.0
+      with: 
+        INPUT_VARIABLE: "Mon code"  
     
     # - name: Validate PR checkboxes
     #   id: checkboxes
@@ -112,20 +114,35 @@ jobs:
         mv jq $HOME/bin/
         echo "$HOME/bin" >> $GITHUB_PATH
     - name: Valider les cases cochées dans la description de la PR
-      id: validate
+      id: validate  
       run: |
-        PR_BODY=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")
+        PR_BODY=$(jq -r '.pull_request.body' "${GITHUB_EVENT_PATH}")
+        
         echo $PR_BODY
         if echo "$PR_BODY" | grep -q '\- \[x\] Mon code'; then
           echo "✅ All required checkboxes are checked!" 
         else
           echo "Erreur : Certaines cases de la checklist ne sont pas cochées."
+          exit 1 
+        fi
+        echo "pr-body<<EOF" >> $GITHUB_OUTPUT
+        echo "$PR_BODY" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+        
+        
+    - name: Valider la description de la PR
+      run: |
+        echo "The PR Body is:"
+        echo "${{ steps.validate.outputs.pr-body }}"
+        
+        if [[ "${{ steps.validate.outputs.pr-body }}" == *"Emptyone"* ]]; then
+          echo "The text 'Empty' exists in the PR body."
           exit 1
           
+        else
+          echo "The text 'Empty file' does not exist in the PR body."
+          
         fi
-      env:
-        GITHUB_EVENT_PATH: ${{ github.event_path }}
-
     - name: Cache node modules
       uses: actions/cache@v3
       env:
